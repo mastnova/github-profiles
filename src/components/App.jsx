@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Profile from './github/Profile.jsx';
 import RepoList from './github/RepoList.jsx';
+import Search from './github/Search.jsx';
 
 class App extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class App extends Component {
         this.setState({userData: data});
       }.bind(this),
       error: function(xhr, status, err) {
-        console.log('error');
+        alert('not found!');
       }
     });
   }
@@ -52,9 +53,17 @@ class App extends Component {
     this.getUserRepos();
   }
 
+  handleFormSubmit(username) {
+    this.setState({username: username}, () => {
+      this.getUserData();
+      this.getUserRepos();
+    });
+  }
+
   render() {
     return (
       <div>
+        <Search onFormSubmit={this.handleFormSubmit.bind(this)}/>
         <Profile userData={this.state.userData}/>
         <RepoList userRepos={this.state.userRepos}/>
       </div>
